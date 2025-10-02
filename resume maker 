@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Free Online Resume Builder | Create & Download Your Professional CV in Minutes</title>
+    <meta name="description" content="Use our powerful, free online resume builder to create a professional CV quickly and easily. Customize templates and download in PDF format instantly.">
+    <meta name="keywords" content="resume builder, online CV maker, free resume template, professional resume, download resume, job application, curriculum vitae">
+    <meta name="author" content="Your Developer Name">
+
+    <link rel="canonical" href="https://www.yourdomain.com/online-resume-builder">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <meta property="og:title" content="Free Online Resume Builder | Create & Download Your Professional CV">
+    <meta property="og:description" content="Create a professional, job-winning resume in minutes using our free, easy-to-use tool.">
+    <meta property="og:url" content="https://www.yourdomain.com/online-resume-builder">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header role="banner">
+        <h1>My Job-Ready Resume Builder</h1>
+        <p>Fill out the sections below to instantly create your professional resume.</p>
+    </header>
+
+    <main class="container">
+        <section id="input-form">
+            <h2>1. Enter Your Details</h2>
+            <form id="resumeForm" autocomplete="on"> <fieldset role="group">
+                    <legend>Personal Information</legend>
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone">
+
+                    <label for="linkedin">LinkedIn URL:</label>
+                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourname">
+
+                    <label for="summary">Professional Summary/Objective:</label>
+                    <textarea id="summary" name="summary" rows="4" required aria-label="Professional Summary or Objective"></textarea>
+                </fieldset>
+
+                <fieldset id="work-experience-section" role="group">
+                    <legend>Work Experience</legend>
+                    <div class="experience-entry">
+                        <h3>Job #1</h3>
+                        <label for="jobTitle1">Job Title:</label>
+                        <input type="text" id="jobTitle1" name="jobTitle1">
+
+                        <label for="company1">Company:</label>
+                        <input type="text" id="company1" name="company1">
+
+                        <label for="duration1">Duration (e.g., Jan 2020 - Present):</label>
+                        <input type="text" id="duration1" name="duration1">
+
+                        <label for="responsibilities1">Key Responsibilities/Achievements (Use bullet points):</label>
+                        <textarea id="responsibilities1" name="responsibilities1" rows="3"></textarea>
+                    </div>
+                    <button type="button" id="addWorkExpBtn" aria-controls="work-experience-section">Add Another Job</button>
+                </fieldset>
+
+                <fieldset id="education-section" role="group">
+                    <legend>Education</legend>
+                    <div class="education-entry">
+                        <h3>School #1</h3>
+                        <label for="degree1">Degree/Certification:</label>
+                        <input type="text" id="degree1" name="degree1">
+
+                        <label for="institution1">Institution Name:</label>
+                        <input type="text" id="institution1" name="institution1">
+
+                        <label for="eduYear1">Graduation Year:</label>
+                        <input type="text" id="eduYear1" name="eduYear1">
+                    </div>
+                     <button type="button" id="addEducationBtn" aria-controls="education-section">Add Another School</button>
+                </fieldset>
+
+                <fieldset role="group">
+                    <legend>Skills</legend>
+                    <label for="skills">Technical Skills, Languages, Tools (Comma-separated):</label>
+                    <input type="text" id="skills" name="skills" placeholder="e.g., HTML, CSS, JavaScript, Project Management, SEO">
+                </fieldset>
+
+                <button type="submit" id="generateBtn" class="primary-action">Generate Resume Preview</button>
+            </form>
+        </section>
+
+        <section id="resume-preview">
+            <h2>2. Your Professional Resume Preview</h2> 
+            <article id="resume-output" class="resume-template" aria-live="polite">
+                <p>Fill out the form and click "Generate Resume Preview" to instantly visualize your resume here.</p>
+            </article>
+            
+            <button id="downloadBtn" style="display:none;" class="secondary-action">Download as PDF</button>
+        </section>
+
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2025 Resume Builder Project. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
