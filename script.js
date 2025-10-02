@@ -7,8 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const addEducationBtn = document.getElementById('addEducationBtn');
     
     // Initialize counters based on existing elements (should be 1 initially)
+    // We only use these to generate UNIQUE data-id and input names for new fields
     let workExpCount = document.querySelectorAll('#work-experience-section .experience-entry').length || 1;
     let educationCount = document.querySelectorAll('#education-section .education-entry').length || 1;
+    
+    // Ensure the initial static entry has the data-id attribute for lookups
+    document.querySelector('#work-experience-section .experience-entry:not([data-id])')?.setAttribute('data-id', 1);
+    document.querySelector('#education-section .education-entry:not([data-id])')?.setAttribute('data-id', 1);
+
 
     // --- 1. Functions to Dynamically Add Fields ---
 
@@ -82,21 +88,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const entry = e.target.closest('.experience-entry') || e.target.closest('.education-entry');
             if (entry) {
                 entry.remove();
-                // Note: The counter values (workExpCount/educationCount) are not decremented,
-                // but the submit function only processes fields that actually exist by ID.
+                // Counter is NOT decremented, but the submit function is now FIXED to handle this.
             }
         }
     });
 
-    // --- 2. Resume Generation/Preview Function ---
+    // --- 2. Resume Generation/Preview Function (FIXED LOGIC) ---
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        // Clear previous preview content and reset for the new resume
-        resumeOutput.innerHTML = ''; 
-        resumeOutput.innerHTML = '<p>Fill out the form and click "Generate Resume Preview" to instantly visualize your resume here.</p>'; // Reset for empty data
-
         // Get all form data as an object for easy lookup
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
@@ -137,22 +138,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
 
-        // --- B. Work Experience Section ---
+        // --- B. Work Experience Section (FIXED) ---
         const workExperiences = [];
         
-        // Look up all possible work entries based on the counter
-        for (let i = 1; i <= workExpCount; i++) {
-            // Check if the input element actually exists in the DOM and has content
-            const jobTitleEl = document.getElementById(`jobTitle${i}`);
-            if (jobTitleEl && (jobTitleEl.value.trim() || document.getElementById(`company${i}`).value.trim())) {
+        // Use document.querySelectorAll to find ONLY the entries that currently exist
+        const workEntries = document.querySelectorAll('#work-experience-section .experience-entry');
+
+        workEntries.forEach(entry => {
+            const entryId = entry.getAttribute('data-id'); 
+            
+            // Look up values using the ID from the FormData
+            const jobTitle = data[`jobTitle${entryId}`] ? data[`jobTitle${entryId}`].trim() : '';
+            const company = data[`company${entryId}`] ? data[`company${entryId}`].trim() : '';
+
+            if (jobTitle || company) {
                  workExperiences.push({
-                    title: data[`jobTitle${i}`].trim(),
-                    company: data[`company${i}`].trim(),
-                    duration: data[`duration${i}`].trim(),
-                    responsibilities: data[`responsibilities${i}`].trim()
+                    title: jobTitle,
+                    company: company,
+                    duration: data[`duration${entryId}`] ? data[`duration${entryId}`].trim() : '',
+                    responsibilities: data[`responsibilities${entryId}`] ? data[`responsibilities${entryId}`].trim() : ''
                 });
             }
-        }
+        });
 
         if (workExperiences.length > 0) {
             hasContent = true;
@@ -176,19 +183,27 @@ document.addEventListener('DOMContentLoaded', () => {
             resumeHTML += '</div>';
         }
 
-        // --- C. Education Section ---
+        // --- C. Education Section (FIXED) ---
         const educationEntries = [];
-        // Look up all possible education entries based on the counter
-        for (let i = 1; i <= educationCount; i++) {
-            const degreeEl = document.getElementById(`degree${i}`);
-            if (degreeEl && (degreeEl.value.trim() || document.getElementById(`institution${i}`).value.trim())) {
+        
+        // Use document.querySelectorAll to find ONLY the entries that currently exist
+        const eduEntries = document.querySelectorAll('#education-section .education-entry');
+
+        eduEntries.forEach(entry => {
+            const entryId = entry.getAttribute('data-id');
+            
+            // Look up values using the ID from the FormData
+            const degree = data[`degree${entryId}`] ? data[`degree${entryId}`].trim() : '';
+            const institution = data[`institution${entryId}`] ? data[`institution${entryId}`].trim() : '';
+
+            if (degree || institution) {
                 educationEntries.push({
-                    degree: data[`degree${i}`].trim(),
-                    institution: data[`institution${i}`].trim(),
-                    year: data[`eduYear${i}`].trim()
+                    degree: degree,
+                    institution: institution,
+                    year: data[`eduYear${entryId}`] ? data[`eduYear${entryId}`].trim() : ''
                 });
             }
-        }
+        });
         
         if (educationEntries.length > 0) {
             hasContent = true;
@@ -233,9 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. PDF Download Functionality ---
 
     downloadBtn.addEventListener('click', () => {
-        // NOTE: You MUST include this script in your HTML for PDF download to work:
-        // <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-        
         const element = document.getElementById('resume-output');
         const fileName = document.getElementById('fullName').value.trim() || 'Resume';
 
