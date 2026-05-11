@@ -61,6 +61,14 @@ footer {
     color: var(--secondary-color);
     font-size: 0.9em;
 }
+.developer-credit {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #94a3b8;
+    text-align: center;
+    letter-spacing: 1px;
+    font-style: italic;
+}
 
 /* === 3. Input Form Styles === */
 #input-form {
